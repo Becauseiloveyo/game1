@@ -190,6 +190,9 @@ export default function App() {
   const [propEffect, setPropEffect] = useState(null);
   const [lastEarnedInfo, setLastEarnedInfo] = useState({ stars: 0, dust: 0, newStar: false }); 
 
+  // 新增：退出登录提示框状态
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const [pieces, setPiecesState] = useState([]);
   const piecesRef = useRef([]);
   const setPieces = useCallback((newPieces) => {
@@ -610,16 +613,22 @@ export default function App() {
   };
 
   const TopBar = ({ title, onBack, showStardust = true, showLogout = false }) => (
-    <div className="w-full max-w-[420px] flex justify-between items-center p-4 z-20 absolute top-0">
-      {onBack ? (
-        <button onClick={onBack} className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition"><ChevronRight className="w-6 h-6 rotate-180" /></button>
-      ) : showLogout ? (
-        <button onClick={() => signOut(auth)} className="p-2 bg-white/10 backdrop-blur-md rounded-full text-white/70 hover:text-white hover:bg-white/20 transition" title="退出登录"><LogOut className="w-5 h-5" /></button>
-      ) : <div className="w-10"></div>}
-      <h2 className="text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200">{title}</h2>
-      {showStardust ? (
-        <div className="flex items-center gap-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md"><Sparkles className="w-4 h-4 text-cyan-300" /><span className="font-bold text-cyan-100">{stardust}</span></div>
-      ) : <div className="w-10"></div>}
+    <div className="fixed top-0 left-0 w-full flex justify-between items-center p-4 md:px-8 md:py-6 z-40 pointer-events-none">
+      <div className="w-24 md:w-32 flex justify-start pointer-events-auto">
+        {onBack ? (
+          <button onClick={onBack} className="p-2 md:p-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition active:scale-95"><ChevronRight className="w-6 h-6 md:w-7 md:h-7 rotate-180" /></button>
+        ) : showLogout ? (
+          <button onClick={() => setShowLogoutConfirm(true)} className="p-2 md:p-3 bg-white/10 backdrop-blur-md rounded-full text-white/70 hover:text-white hover:bg-white/20 transition active:scale-95 shadow-lg" title="退出登录"><LogOut className="w-5 h-5 md:w-6 md:h-6" /></button>
+        ) : <div className="w-10"></div>}
+      </div>
+      
+      <h2 className="text-xl md:text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200 text-center flex-1 pointer-events-auto whitespace-nowrap">{title}</h2>
+      
+      <div className="w-24 md:w-32 flex justify-end pointer-events-auto">
+        {showStardust ? (
+          <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 backdrop-blur-md shadow-lg"><Sparkles className="w-4 h-4 md:w-5 md:h-5 text-cyan-300" /><span className="font-bold text-cyan-100 md:text-lg">{stardust}</span></div>
+        ) : <div className="w-10"></div>}
+      </div>
     </div>
   );
 
@@ -945,6 +954,27 @@ export default function App() {
                 <button onClick={() => setGameState('start')} className="w-full py-4 bg-white/10 border border-white/20 rounded-xl font-bold text-lg hover:bg-white/20 transition-all">返回母舰</button>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* --- 退出确认弹窗 --- */}
+      {showLogoutConfirm && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in pointer-events-auto">
+          <div className="w-full max-w-sm bg-slate-900/90 backdrop-blur-2xl border border-white/20 rounded-3xl p-8 flex flex-col items-center text-center shadow-[0_0_100px_rgba(0,0,0,0.8)] transform transition-all animate-pop-in">
+            <div className="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mb-4 border border-rose-500/30 text-rose-400">
+              <LogOut className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-bold mb-2 text-white tracking-widest">断开连接</h3>
+            <p className="text-slate-300 mb-8 text-sm leading-relaxed">舰长，确定要退出当前星际通行证吗？<br/>您的宇宙探索进度已安全保存在云端。</p>
+            <div className="flex gap-4 w-full">
+              <button onClick={() => setShowLogoutConfirm(false)} className="flex-1 py-3 bg-white/10 border border-white/20 rounded-xl font-bold hover:bg-white/20 transition-all active:scale-95 text-white/80 hover:text-white">
+                取消
+              </button>
+              <button onClick={() => { signOut(auth); setShowLogoutConfirm(false); }} className="flex-1 py-3 bg-gradient-to-r from-rose-500 to-red-600 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg shadow-rose-500/30 active:scale-95 text-white">
+                确认退出
+              </button>
+            </div>
           </div>
         </div>
       )}
