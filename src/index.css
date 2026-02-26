@@ -1,0 +1,14 @@
+/* 引入 Tailwind CSS 基础指令 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 清除 Vite 默认的边距和宽度限制，让应用铺满全屏 */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: black; /* 边缘默认设为黑色，与游戏融为一体 */
+  overflow-x: hidden; /* 防止出现横向滚动条 */
+}
