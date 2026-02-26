@@ -1,16 +1,109 @@
-# React + Vite
+# ✨ 星空晶莹 | Crystal Link
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+一款以宇宙星空为主题的三消益智游戏，玩家扮演星际舰长，在星域航线中收集星尘能量、解锁关卡、挑战更高难度。
 
-Currently, two official plugins are available:
+## 🎮 游戏玩法
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **核心机制**：在 8×8 的棋盘上交换相邻宝石，三个或更多同类宝石连成一线即可消除并得分
+- **连锁反应**：消除后宝石自动下落填补空位，新宝石从顶部生成，可能触发连锁消除
+- **连击评语**：根据连击次数和消除数量展示 "Good!"、"Amazing!"、"Excellent!"、"Unbelievable!"、"Godlike!" 等特效文字
 
-## React Compiler
+## 🌌 关卡系统
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+共 **15 个关卡**，每关拥有独立的星域名称、背景故事、目标分数与行动步数限制。随着关卡推进，宝石种类从 5 种增加到 6 种，挑战难度逐步提升。
 
-## Expanding the ESLint configuration
+| 关卡 | 名称 | 目标分数 | 步数 |
+| --- | --- | --- | --- |
+| 1 | 星尘初晓 | 1,000 | 20 |
+| 2 | 碎石地带 | 1,800 | 22 |
+| 3 | 能量跃迁 | 2,800 | 16 |
+| ... | ... | ... | ... |
+| 15 | 创世之光 | 35,000 | 55 |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⭐ 难度模式与星级评定
+
+每关有三种难度模式，通关后获得对应星级：
+
+| 星级 | 模式 | 描述 |
+| --- | --- | --- |
+| ⭐ | 巡航协议 | 基础模式，可自由使用道具 |
+| ⭐⭐ | 跃迁指令 | 精英挑战，单局最多使用 2 次道具 |
+| ⭐⭐⭐ | 奇点绝境 | 炼狱模式，道具系统完全锁定 |
+
+获得 1 星后解锁跃迁模式，获得 2 星后解锁奇点绝境。全部关卡以奇点绝境通关即达成"宇宙之巅"终极成就。
+
+## 🛠️ 道具系统
+
+在游戏中可使用三种道具辅助通关：
+
+- **星辰陨灭（锤子）**：点击任意单个宝石直接将其消除
+- **时空回溯（沙漏）**：为当前关卡额外增加 5 步行动次数
+- **星河重置（骰子）**：随机重新排列棋盘上所有宝石
+
+道具可在 **星尘补给站（商店）** 中使用星尘货币购买。
+
+## 💫 星尘货币
+
+- 通关后根据难度模式和超额分数获得星尘奖励
+- 星尘可在商店中兑换道具
+- 初始赠送 300 星尘及各 1 个道具
+
+## 🔐 账号与云存档
+
+- 支持 **邮箱注册/登录** 和 **游客模式** 两种方式
+- 基于 Firebase Authentication 进行身份验证
+- 使用 Firebase Firestore 实现云端存档同步，进度在任何设备上都可恢复
+
+## 🎨 视觉特效
+
+- **动态星空背景**：Canvas 绘制的星辰与流星，根据当前页面状态（主页、关卡、商店、游戏中）动态调整颜色与速度
+- **宝石设计**：6 种不同形状与渐变色彩的 SVG 宝石
+- **道具特效**：锤子红矮星湮灭、沙漏时空涟漪、骰子黑洞漩涡动画
+- **UI 动画**：淡入、滑入、弹入、浮动文字等过渡效果
+
+## 🚀 技术栈
+
+- **前端框架**：[React](https://react.dev/) 19
+- **构建工具**：[Vite](https://vite.dev/) 7
+- **样式方案**：[Tailwind CSS](https://tailwindcss.com/)（CDN 引入）
+- **图标库**：[Lucide React](https://lucide.dev/)
+- **后端服务**：[Firebase](https://firebase.google.com/)（Authentication + Firestore + Analytics）
+- **代码规范**：ESLint
+
+## 📦 快速开始
+
+```bash
+# 克隆仓库
+git clone https://github.com/Becauseiloveyo/game1.git
+cd game1
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+其他可用命令：
+
+```bash
+npm run build    # 构建生产版本
+npm run preview  # 预览构建产物
+npm run lint     # 运行 ESLint 检查
+```
+
+## 📁 项目结构
+
+```
+game1/
+├── public/            # 静态资源（favicon、图标）
+├── src/
+│   ├── App.jsx        # 主应用组件（游戏全部逻辑与 UI）
+│   ├── App.css        # 组件样式
+│   ├── main.jsx       # 应用入口
+│   └── index.css      # 全局样式与 Tailwind 指令
+├── index.html         # HTML 模板
+├── vite.config.js     # Vite 配置
+├── eslint.config.js   # ESLint 配置
+└── package.json       # 项目依赖与脚本
+```
